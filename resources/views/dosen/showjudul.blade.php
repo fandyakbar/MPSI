@@ -87,52 +87,80 @@
         <div class="row justify-content-center">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header">Daftar Permintaan Bimbingan TA</div>
-
+                    <div class="card-header">Revisi Judul Bimbingan TA</div>
                     <div class="card-body">
-                      <div class="table-responsive">
-                        <table class="table align-items-center table-dark">
-                            <thead class="thead-dark">
-                            <tr>
-                               
-                                <th>NIM</th>
-                                <th>Nama Mahasiswa</th>
-                                <th>Ide TA</th>
-                                <th>Aksi</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              
-                            @forelse ($data as $permintaan)
-                            <tr>
-                              <td>{{$permintaan->rancangan->mahasiswa->nim}}</td>
-                              <td>{{$permintaan->rancangan->mahasiswa->nama}}</td>
-                              <td>{{$permintaan->rancangan->deskripsi }}</td>
-                              <td>
-                                @if ($permintaan->rancangan->status==0)
-                                <a href="{{ route('terima', [$permintaan->id_rancangan]) }}" type="button" class="btn btn-primary"><i class="fas fa-check"></i></a>
-                                <a href="{{ route('tolak', [$permintaan->id_rancangan]) }}" type="button" class="btn btn-primary"><i class="fa fa-ban" aria-hidden="true"></i>
-                                </i></a>
-
-                                @elseif($permintaan->rancangan->status==1)
-                                  Diterima
-                                @elseif($permintaan->rancangan->status==2)
-                                  Ditolak
-                                @endif
-                              </td>
-                            </tr>
-                            @empty
-                            <tr>
-                              <td colspan="5">Belum ada Permintaan</td>
-                          </tr>
-                            @endforelse
-                          
-                            </tbody>
-                        </table>
-                    
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <div class="form-group">
+                                            <div><strong>TA Oleh</strong></div>
+                                          <div>{{ $data->mahasiswa->nama }} <br>
+                                        <small>{{ $data->mahasiswa->nim }}</small></div>
+                                    </div>
+                                    <div class="form-group">
+                                            <div><strong>Judul</strong></div>
+                                          <div>@if ($data->judul != null)
+                                            {{ $data->judul }}
+                                          @else
+                                          Belum Ada judul
+                                          @endif
+                                        </div>
+                                        
+                                    </div>
+                                    <a href="{{route('judul.updatess', [$id] )}}"  type="button" class="btn btn-primary"><i class="fa fa-check" aria-hidden="true"></i> Acc Judul
+                                    <a href="" data-toggle="modal" data-target="#exampleModal" type="button" class="btn btn-warning"><i class="fa fa-cogs" aria-hidden="true"></i> Revisi
+                                    </a>
+    
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
+                   
             </div>
+    {{-- Modal --}}
+    
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Masukan Catatan Revisi Anda</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+        {{--  --}}
+        <form action="{{route('judul.updates', [$id])}}" method="POST">
+          @csrf
+      {{-- Judul Webinar --}}
+      <div class="form-group">
+          <label class="bmd-label-floating" for="catatan_dosen">Apa yang harus direvisi?</label>
+          <div class="input-group">
+              <textarea type="text" class="form-control" name="catatan_dosen" placeholder="Tulis Komentar di sini" aria-label="catatan_dosen" aria-describedby="catatan_dosen"></textarea>
+            </div>
+        
+      </div>
+      {{-- Submit --}}
+     
+  
+      
+      
+        {{--  --}}
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-outline-primary">Submit</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  </form>
+      </div>
+      
+      </div>
+  
+    {{-- TT Modal TT --}}
         </div>
     </div>
       <!-- Footer -->

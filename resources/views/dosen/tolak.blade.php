@@ -38,15 +38,15 @@
         <!-- Nav items -->
         <ul class="navbar-nav">
             <li class="nav-item">
-            <a class="nav-link active" href="examples/dashboard.html">
+            <a class="nav-link active" href="{{route('Dosen.home')}}">
                 <i class="ni ni-tv-2 text-primary"></i>
                 <span class="nav-link-text">Dashboard</span>
             </a>
             </li>
             <li class="nav-item">
-            <a class="nav-link" href="examples/tables.html">
+            <a class="nav-link" href="{{route('judul.index')}}">
               <i class="ni ni-single-02 text-green"></i>
-                <span class="nav-link-text">Permintaan Bimbingan</span>
+                <span class="nav-link-text">Pembuatan Judul</span>
             </a>
             </li>
             <li class="nav-item">

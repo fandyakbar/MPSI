@@ -32,11 +32,19 @@ Route::get('dataTableUSer', 'UserController@dataTable')->name('dataTableUser');
 Route::get('/logina', function(){
     return view('login.login');
 })->name('login');
+
+
 Route::post('/masuk', 'loginController@login')->name('masuk');
 Route::get('/keluar', 'loginController@logout')->name('keluar');
 Route::get('/dosen/terima/{id}', 'dosenController@terima')->name('terima');
 Route::get('/dosen/tolak/{id}', 'dosenController@tolak')->name('tolak');
 Route::post('/dosen/tolak/{id}/tolaks', 'dosenController@tolaks')->name('tolaks');
+
+//Fandy 2
+
+Route::resource('dosen/judul', 'dosen\judulController');
+Route::post('dosen/judul/{id}/updates', 'dosen\judulController@updates')->name('judul.updates');
+Route::get('dosen/judul/{id}/updatess', 'dosen\judulController@updatess')->name('judul.updatess');
 
 
 //
