@@ -97,7 +97,7 @@
                                
                                 <th>NIM</th>
                                 <th>Nama Mahasiswa</th>
-                                <th>Ide TA</th>
+                                <th>Judul</th>
                                 <th>Aksi</th>
                               </tr>
                             </thead>
@@ -107,23 +107,21 @@
                             <tr>
                               <td>{{$permintaan->rancangan->mahasiswa->nim}}</td>
                               <td>{{$permintaan->rancangan->mahasiswa->nama}}</td>
-                              <td>{{$permintaan->rancangan->deskripsi }}</td>
+                              <td>{{$permintaan->rancangan->judul }}</td>
                               <td>
-                                @if ($permintaan->rancangan->status==0)
-                                <a href="{{ route('terima', [$permintaan->id_rancangan]) }}" type="button" class="btn btn-primary"><i class="fas fa-check"></i></a>
-                                <a href="{{ route('tolak', [$permintaan->id_rancangan]) }}" type="button" class="btn btn-primary"><i class="fa fa-ban" aria-hidden="true"></i>
+                                @if ($permintaan->rancangan->status==1)
+                                <a href="{{ route('judul.show', [$permintaan->id_rancangan]) }}" type="button" class="btn btn-primary"><i class="fa fa-search" aria-hidden="true"></i>
+                                </a>
                                 </i></a>
 
-                                @elseif($permintaan->rancangan->status==1)
-                                  Diterima
-                                @elseif($permintaan->rancangan->status==2)
-                                  Ditolak
+                                @else
+                                  Tidak Tersedia
                                 @endif
                               </td>
                             </tr>
                             @empty
                             <tr>
-                              <td colspan="5">Belum ada Permintaan</td>
+                              <td colspan="5">Belum ada Kelompok</td>
                           </tr>
                             @endforelse
                           
