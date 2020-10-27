@@ -37,7 +37,7 @@
         <div class="collapse navbar-collapse" id="sidenav-collapse-main">
         <!-- Nav items -->
         <ul class="navbar-nav">
-            <li class="nav-item">
+        <li class="nav-item">
             <a class="nav-link active" href="/mahasiswa">
                 <i class="ni ni-tv-2 text-primary"></i>
                 <span class="nav-link-text">Dashboard</span>
@@ -101,60 +101,62 @@
         <div class="row justify-content-center">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header"><b>List Rancangan Judul Tugas Akhir</b></div>
+                    <div class="card-header"><b>List Rancangan Ide Tugas Akhir</b></div>
 
-                    <div class="card-body">
                     <div class="card-body">
                          <div class="card">
-                          <!-- <a class="btn btn-primary" href = "/mahasiswa/tambah">Ajukan Judul</a> -->
-                    <div class="table-responsive">
-    <div>
-    <table class="table align-items-center table-dark" style="text-align:center">
-        <thead class="thead-dark">
-            <tr>
-                <!-- <th scope="col" class="sort" data-sort="nim">NIM</th> -->
-                <th scope="col" class="sort" data-sort="judul">Judul yang Diajukan</th>
-                <th scope="col" class="sort" data-sort="dosbing">Dosen Pembimbing</th>
-                <th scope="col" class="sort" data-sort="status">Status</th>
-                <!-- <th scope="col">Users</th> -->
-                <!-- <th scope="col" class="sort" data-sort="aksi">Aksi</th> -->
-                <th scope="col">Aksi</th>
-            </tr>
-        </thead>
-        <tbody class="list">
-            @forelse($detail_dosbing as $detail_dosbing)
-            <tr>
-                
-                <td class="budget">
-                {{$detail_dosbing->rancangan->judul}}
-                </td>
-                <td>
-                    {{$detail_dosbing->dosen->nama}}
-                </td>
-                
-                <td>
-                <h4 style="background-color:white">{{$status[$detail_dosbing->rancangan->status]}}</h4>
-                </td>
+                         	
 
-                <td>
-                
-                <a type="button" class="btn btn-primary" href="{{route('detail',[$detail_dosbing->id_rancangan])}}">Detail</a>
-                </td>
-            </tr>
-            @empty
-            <tr>
-              <td colspan="5">Belum ada list judul TA</td>
-            <tr>
-            @endforelse
-            </tbody>
+            <table class="table align-items-center table-dark" style="text-align: center;">
+              <a type="button" class="btn btn-outline-primary" href = "{{route('bidang')}}">Ajukan Ide</a>
+                <thead class="thead-dark">
+                <tr>
+                    <th>Deskripsi Ide</th>
+                    <th>Dosen Pembimbing</th>
+                    <th>Status</th>
+                    <th>Tambah Judul</th>
+                </tr>
+                </thead>
+                <tbody>
+                @forelse($detail_dosbing as $detail_dosbing)
+                    <tr>
+                        <td>@if ($detail_dosbing->rancangan->deskripsi)
+                          {{$detail_dosbing->rancangan->deskripsi}}
+            @else
+              -
+            @endif</td>
+                        <td>{{$detail_dosbing->dosen->nama}}</td>
+                        <td>
+                            <h4 style="background-color: white">{{ $status[$detail_dosbing->rancangan->status ]}}</h4>
+                        </td>
+                        <td>
+                        @if($detail_dosbing->rancangan->status==1)
+                          
+                      <a href="{{route('tambahjudul',[$detail_dosbing->id_rancangan])}}" class="btn btn-primary"><i class="far fa-edit" aria-hidden="true"></i></a>
+                          @else
+                          <a href="{{route('tambahjudul',[$detail_dosbing->id_rancangan])}}" class="btn btn-primary disabled" ><i class="far fa-edit" aria-hidden="true"></i></a>
+                          </td>
+                          @endif
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="5">Belum ada list ide TA</td>
+                    </tr>
+                @endforelse
+                </tbody>
             </table>
+        </div>
+
+        <div class="card-footer">
+
+        </div>
+
+    </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    
-    
       <!-- Footer -->
       <footer class="footer pt-0">
         @include('include.footer')
