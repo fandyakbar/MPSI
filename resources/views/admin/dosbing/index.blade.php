@@ -38,7 +38,7 @@
         <!-- Nav items -->
         <ul class="navbar-nav">
             <li class="nav-item">
-            <a class="nav-link active" href="{{route('home')}}">
+            <a class="nav-link" href="{{route('Admin.home')}}">
                 <i class="ni ni-tv-2 text-primary"></i>
                 <span class="nav-link-text">Dashboard</span>
             </a>
@@ -49,8 +49,8 @@
                 <span class="nav-link-text">Daftar Permohonan TA</span>
             </a>
             </li>
-            <li class="nav-item">
-            <a class="nav-link" href="{{route('admin.dosbing')}}">
+            <li class="nav-item active">
+            <a class="nav-link active" href="{{route('admin.dosbing')}}">
                 <i class="ni ni-single-02 text-pink"></i>
                 <span class="nav-link-text">Pilih Dosen Pembimbing</span>
             </a>
@@ -66,7 +66,7 @@
                     <i class="fas fa-sign-out-alt text-pink"></i>
                     <span class="nav-link-text">Logout</span>
                 </a>
-                </li>
+            </li>
         </ul>
       </div>
     </div>
@@ -93,44 +93,66 @@
         <div class="row justify-content-center">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header"><h2>Daftar Tugas Akhir</h2></div>
+                    <div class="card-header"><h3>Daftar Mahasiswa</h3></div>
 
                     <div class="card-body">
                       <div class="table-responsive">
                         <table class="table align-items-center table-dark">
                             <thead class="thead-dark">
                             <tr>
+                               
                                 <th>No.</th>
                                 <th>NIM</th>
-                                <th>Nama</th>
-                                <th>Judul TA</th>
-                                <th>Status</th>
-                                <th>Dosen Pembimbing</th>
+                                <th>Nama Mahasiswa</th>
+                                <th>Aksi</th>
                               </tr>
                             </thead>
                             <tbody>
                               
-                            @forelse ($rancangan as $rc)
+                            @forelse ($mahasiswa as $mhs)
                             <tr>
                               <td>{{$loop->iteration}}</td>
-                              <td>{{$rc->mahasiswa->nim}}</td>
-                              <td>{{$rc->mahasiswa->nama}}</td>
-                              <td>{{$rc->judul}}</td>
-                              <td>{!!$rc->status_text!!}</td>
+                              <td>{{$mhs->nim}}</td>
+                              <td>{{$mhs->nama}}</td>
                               <td>
-                                <ul>
-                                  @forelse($rc->detail as $dt)
-                                    <li>{{$dt->dosen->nama}}</li>
-                                </ul>
-                              @empty  
-                                <li>Belum Ada</li>
+                                <!-- Trigger the modal with a button -->
+                                <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal">Pilih Dosen</button>
+
+                                <!-- Modal -->
+                                <div id="myModal" class="modal fade" role="dialog">
+                                  <div class="modal-dialog">
+
+                                    <!-- Modal content-->
+                                    <div class="modal-content">
+                                      <div class="modal-header">
+                                        <h4 class="modal-title">Pilih Dosen Pembimbing</h4>
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                      </div>
+                                      <div class="modal-body">
+                                        <form action="{{route('admin.dosbing.store',[$mhs->id])}}" method="get">
+                                        <div class="form-group">
+                                          <h4>Dosen Pembimbing</h4>
+                                          <select class="form-control" id="exampleFormControlSelect1" name="dosbing">
+                                          @foreach($dosen as $ds)
+                                            <option value="{{$ds->id}}">{{$ds->nama}}</option>
+                                          @endforeach
+                                          </select>
+                                        </div>
+                                      </div>
+                                      <div class="modal-footer">
+                                        <button type="submit" class="btn btn-success">Simpan</button>
+                                      </div>
+                                      </form>
+                                    </div>
+
+                                  </div>
+                                </div>
                               </td>
-                              @endforelse
                             </tr>
                             @empty
                             <tr>
-                              <td colspan="5">Tidak Ada Permohonan</td>
-                            </tr>
+                              <td colspan="5">Tidak Ada Mahasiswa</td>
+                          </tr>
                             @endforelse
                           
                             </tbody>

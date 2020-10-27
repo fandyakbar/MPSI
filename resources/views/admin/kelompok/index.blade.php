@@ -38,7 +38,7 @@
         <!-- Nav items -->
         <ul class="navbar-nav">
             <li class="nav-item">
-            <a class="nav-link active" href="{{route('home')}}">
+            <a class="nav-link" href="{{route('Admin.home')}}">
                 <i class="ni ni-tv-2 text-primary"></i>
                 <span class="nav-link-text">Dashboard</span>
             </a>
@@ -55,8 +55,8 @@
                 <span class="nav-link-text">Pilih Dosen Pembimbing</span>
             </a>
             </li>
-            <li class="nav-item">
-            <a class="nav-link" href="{{route('admin.kelompok')}}">
+            <li class="nav-item active">
+            <a class="nav-link active" href="{{route('admin.kelompok')}}">
                 <i class="ni ni-circle-08 text-yellow"></i>
                 <span class="nav-link-text">Kelompok Bimbingan</span>
             </a>
@@ -93,7 +93,8 @@
         <div class="row justify-content-center">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header"><h2>Daftar Tugas Akhir</h2></div>
+                    <div class="card-header"><h3>Daftar Kelompok Bimbingan</h3></div>
+                    
 
                     <div class="card-body">
                       <div class="table-responsive">
@@ -101,36 +102,28 @@
                             <thead class="thead-dark">
                             <tr>
                                 <th>No.</th>
-                                <th>NIM</th>
-                                <th>Nama</th>
-                                <th>Judul TA</th>
-                                <th>Status</th>
-                                <th>Dosen Pembimbing</th>
+                                <th>NIP</th>
+                                <th>Nama Dosen</th>
+                                <th>Konsentrasi</th>
+                                <th>Detail</th>
                               </tr>
                             </thead>
                             <tbody>
                               
-                            @forelse ($rancangan as $rc)
+                            @forelse ($dosen as $ds)
                             <tr>
                               <td>{{$loop->iteration}}</td>
-                              <td>{{$rc->mahasiswa->nim}}</td>
-                              <td>{{$rc->mahasiswa->nama}}</td>
-                              <td>{{$rc->judul}}</td>
-                              <td>{!!$rc->status_text!!}</td>
+                              <td>{{$ds->nip}}</td>
+                              <td>{{$ds->nama}}</td>
+                              <td>{{$ds->konsentrasi->nama}}</td>
                               <td>
-                                <ul>
-                                  @forelse($rc->detail as $dt)
-                                    <li>{{$dt->dosen->nama}}</li>
-                                </ul>
-                              @empty  
-                                <li>Belum Ada</li>
+                                    <a href="{{ route('admin.kelompok.show', [$ds->id]) }}" type="button" class="btn btn-primary btn-sm"><i class="fa fa-search"></i></a>
                               </td>
-                              @endforelse
                             </tr>
                             @empty
                             <tr>
-                              <td colspan="5">Tidak Ada Permohonan</td>
-                            </tr>
+                              <td colspan="5">Tidak Ada Dosen</td>
+                          </tr>
                             @endforelse
                           
                             </tbody>
