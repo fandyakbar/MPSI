@@ -37,7 +37,7 @@
         <div class="collapse navbar-collapse" id="sidenav-collapse-main">
         <!-- Nav items -->
         <ul class="navbar-nav">
-            <li class="nav-item">
+        <li class="nav-item">
             <a class="nav-link active" href="/mahasiswa">
                 <i class="ni ni-tv-2 text-primary"></i>
                 <span class="nav-link-text">Dashboard</span>
@@ -96,64 +96,60 @@
       
     </div>
     <!-- Page content -->
-    <div class="container-fluid mt--6">
+	<div class="container-fluid mt--6">
         <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header"><b>List Rancangan Judul Tugas Akhir</b></div>
-
+                    <div class="card-header"><b>Detail Rancangan TA</b></div>
+                    @foreach($rancangan as $rancangan) 
+                   
                     <div class="card-body">
-                    <div class="card-body">
-                         <div class="card">
-                          <!-- <a class="btn btn-primary" href = "/mahasiswa/tambah">Ajukan Judul</a> -->
-                    <div class="table-responsive">
-    <div>
-    <table class="table align-items-center table-dark" style="text-align:center">
-        <thead class="thead-dark">
-            <tr>
-                <!-- <th scope="col" class="sort" data-sort="nim">NIM</th> -->
-                <th scope="col" class="sort" data-sort="judul">Judul yang Diajukan</th>
-                <th scope="col" class="sort" data-sort="dosbing">Dosen Pembimbing</th>
-                <th scope="col" class="sort" data-sort="status">Status</th>
-                <!-- <th scope="col">Users</th> -->
-                <!-- <th scope="col" class="sort" data-sort="aksi">Aksi</th> -->
-                <th scope="col">Aksi</th>
-            </tr>
-        </thead>
-        <tbody class="list">
-            @forelse($detail_dosbing as $detail_dosbing)
-            <tr>
-                
-                <td class="budget">
-                {{$detail_dosbing->rancangan->judul}}
-                </td>
-                <td>
-                    {{$detail_dosbing->dosen->nama}}
-                </td>
-                
-                <td>
-                <h4 style="background-color:white">{{$status[$detail_dosbing->rancangan->status]}}</h4>
-                </td>
+					<form action="" method="">
+  					{{csrf_field()}}
+                      
+					<div class="row">
+    					<div class="col-md-6">
+      						<div class="form-group">
+                              <div class='form-label'><b>Judul : </b></div>
+    <div>{{ $rancangan->judul }}</div>
+      						</div>
+    					</div>
+					</div>
+      
 
-                <td>
-                
-                <a type="button" class="btn btn-primary" href="{{route('detail',[$detail_dosbing->id_rancangan])}}">Detail</a>
-                </td>
-            </tr>
-            @empty
-            <tr>
-              <td colspan="5">Belum ada list judul TA</td>
-            <tr>
-            @endforelse
-            </tbody>
-            </table>
+          
+    
+                    <div class="row">
+    					<div class="col-md-6">
+     						 <div class="form-group">
+	  						<div class='form-label'><b>Catatan Dosen : </b></div>
+    <div>{{ $rancangan->catatan_dosen}}</div>
+     	 					</div>
+    					</div>
+					</div>
+@endforeach
+    </div>
+    </div></div></div>
+
+					<div class="row">
+    					<div class="col-md-6">
+      						<div class="form-group">
+                  <a class="btn btn-danger" href="{{route('Mahasiswa.home')}}">Kembali</a>
+                  <a type="button" class="btn btn-primary" href="{{route('edit',[$rancangan->id])}}">Edit</a>
+
+      						</div>
+    					</div>
+					</div>
+	
+					</form>
+
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    
+
     
       <!-- Footer -->
       <footer class="footer pt-0">
