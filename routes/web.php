@@ -37,6 +37,7 @@ Route::get('/logina', function(){
 Route::post('/masuk', 'loginController@login')->name('masuk');
 Route::get('/keluar', 'loginController@logout')->name('keluar');
 Route::get('/dosen/terima/{id}', 'dosenController@terima')->name('terima');
+Route::get('/dosen/grup', 'dosenController@grup')->name('dosen.grup');
 Route::get('/dosen/tolak/{id}', 'dosenController@tolak')->name('tolak');
 Route::post('/dosen/tolak/{id}/tolaks', 'dosenController@tolaks')->name('tolaks');
 

@@ -29,7 +29,8 @@ class judulController extends Controller
                         ->where('id_dosen', '=', $user_id)
                         ->where('rancangan.status', '1')
                         ->get();
-        return view('dosen.judul', compact('data'));
+        $status_rancangan = config('rancangan.status_rancangan');
+        return view('dosen.judul', compact('data','status_rancangan'));
     }
 
     /**

@@ -31,7 +31,20 @@ class DosenController extends Controller
         $user_id = auth()->user()->id;
         $data=Detail_dosbing::where('id_dosen', '=', $user_id)
                         ->get();
-        return view('dosen.dosen', compact('data'));
+                        $status_rancangan = config('rancangan.status_rancangan');
+        return view('dosen.dosen', compact('data', 'status_rancangan'));
+    }
+    public function grup()
+    {
+        $user_id = auth()->user()->id;
+        $uname = auth()->user()->nama;
+        $data=Detail_dosbing::join('rancangan', 'detail_dosbing.id_rancangan', '=', 'rancangan.id')
+                        ->where('detail_dosbing.id_dosen', '=', $user_id)
+                        ->where('rancangan.status','!=','0')
+                        ->where('rancangan.status','!=','2')
+                        ->get();
+        $status_rancangan = config('rancangan.status_rancangan');
+        return view('dosen.grup', compact('data', 'status_rancangan','uname'));
     }
     public function terima($id){
         $user_id = auth()->user()->id;
