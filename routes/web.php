@@ -27,6 +27,17 @@ Route::get('/dosen', 'DosenController@index')->name('Dosen.home');
 Route::resource('user', 'UserController');
 Route::get('dataTableUSer', 'UserController@dataTable')->name('dataTableUser');
 
+//Route By Ciwi Ciwi
+Route::get('/mahasiswa/list/{id}/tambah','MahasiswaController@tambah')->name('tambahjudul');
+Route::post('/mahasiswa/list{id}/update1','MahasiswaController@store')->name('updatejudul1');
+Route::get('/mahasiswa/detail/{id}', 'MahasiswaController@detail')->name('detail');
+Route::get('mahasiswa/detail/{id}/edit','MahasiswaController@edit')->name('edit');
+Route::post('/mahasiswa/detail/{id}/update', 'MahasiswaController@update')->name('update');
+Route::get('/mahasiswa/list','MahasiswaController@list')->name('list');
+Route::get('/mahasiswa/tambahide', 'MahasiswaController@tambahide')->name('bidang');
+Route::get('/mahasiswa/tambahide/{id}', 'MahasiswaController@pilihdosbing')->name('dosbing');
+Route::post('/mahasiswa/storeide','MahasiswaController@storeide')->name('storeide');
+
 // Route By Fandy
 
 Route::get('/logina', function(){
