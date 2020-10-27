@@ -20,12 +20,14 @@ class CreateAllTable extends Migration
             $table->string('nama');
             $table->string('password');
             $table->integer('nim');
+            $table->integer('status');
             $table->timestamps();
         });
 
         Schema::create('konsentrasi', function (Blueprint $table) {
             $table->id();
             $table->string('nama');
+            $table->timestamps();
         });
 
         Schema::create('dosen', function (Blueprint $table) {
@@ -43,11 +45,11 @@ class CreateAllTable extends Migration
         Schema::create('rancangan', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('id_mahasiswa')->nullable();
-            $table->string('judul');
+            $table->string('judul')->nullable();
             $table->integer('status');
-            $table->string('file_surat');
-            $table->string('deskripsi');
-            $table->string('catatan_dosen');
+            $table->string('file_surat')->nullable();
+            $table->string('deskripsi')->nullable();
+            $table->string('catatan_dosen')->nullable();
             $table->timestamps();
 
             $table->foreign('id_mahasiswa')->references('id')->on('mahasiswa')->onDelete('set null');
@@ -57,6 +59,7 @@ class CreateAllTable extends Migration
             $table->id();
             $table->unsignedBigInteger('id_rancangan')->nullable();
             $table->unsignedBigInteger('id_dosen')->nullable();
+            $table->timestamps();
 
             $table->foreign('id_rancangan')->references('id')->on('rancangan')->onDelete('set null');
             $table->foreign('id_dosen')->references('id')->on('dosen')->onDelete('set null');

@@ -8,6 +8,11 @@ class Detail_dosbing extends Model
 {
     //
     protected $table='detail_dosbing';
+
+    protected $fillable = [
+        'id_rancangan',
+        'id_dosen'
+      ];
     
     public function rancangan()
     {

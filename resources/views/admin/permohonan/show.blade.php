@@ -38,13 +38,13 @@
         <!-- Nav items -->
         <ul class="navbar-nav">
             <li class="nav-item">
-            <a class="nav-link active" href="{{route('home')}}">
+            <a class="nav-link" href="{{route('Admin.home')}}">
                 <i class="ni ni-tv-2 text-primary"></i>
                 <span class="nav-link-text">Dashboard</span>
             </a>
             </li>
-            <li class="nav-item">
-            <a class="nav-link" href="{{route('admin.permohonan')}}">
+            <li class="nav-item active">
+            <a class="nav-link active" href="{{route('admin.permohonan')}}">
                 <i class="ni ni-bullet-list-67 text-default"></i>
                 <span class="nav-link-text">Daftar Permohonan TA</span>
             </a>
@@ -93,49 +93,36 @@
         <div class="row justify-content-center">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header"><h2>Daftar Tugas Akhir</h2></div>
-
+                    <div class="card-header"><h3>Permohonan TA</h3></div>
                     <div class="card-body">
-                      <div class="table-responsive">
-                        <table class="table align-items-center table-dark">
-                            <thead class="thead-dark">
-                            <tr>
-                                <th>No.</th>
-                                <th>NIM</th>
-                                <th>Nama</th>
-                                <th>Judul TA</th>
-                                <th>Status</th>
-                                <th>Dosen Pembimbing</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              
-                            @forelse ($rancangan as $rc)
-                            <tr>
-                              <td>{{$loop->iteration}}</td>
-                              <td>{{$rc->mahasiswa->nim}}</td>
-                              <td>{{$rc->mahasiswa->nama}}</td>
-                              <td>{{$rc->judul}}</td>
-                              <td>{!!$rc->status_text!!}</td>
-                              <td>
-                                <ul>
-                                  @forelse($rc->detail as $dt)
-                                    <li>{{$dt->dosen->nama}}</li>
-                                </ul>
-                              @empty  
-                                <li>Belum Ada</li>
-                              </td>
-                              @endforelse
-                            </tr>
-                            @empty
-                            <tr>
-                              <td colspan="5">Tidak Ada Permohonan</td>
-                            </tr>
-                            @endforelse
-                          
-                            </tbody>
-                        </table>
-                    
+                      <!-- Static Field for Tanggal -->
+                        <div class="form-group">
+                            <div class="form-label">NIM</div>
+                            <div><h5>{{$rancangan->mahasiswa->nim}}</h5></div>
+                        </div>
+                        <div class="form-group">
+                            <div class="form-label">Nama</div>
+                            <div><h5>{{$rancangan->mahasiswa->nama}}</h5></div>
+                        </div>
+                        <div class="form-group">
+                            <div class="form-label">Judul TA</div>
+                            <div><h5>{{$rancangan->judul}}</h5></div>
+                        </div>
+                        <div class="form-group">
+                            <div class="form-label">Dosen Pembimbing</div>
+                            <div>
+                            @foreach($rancangan->detail as $rc)
+                              <h5>{{$rc->dosen->nama}}</h5>
+                            @endforeach
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="form-label">Surat Permohonan</div>
+                            <div><h5>{{$rancangan->file_surat}}</h5></div>
+                        </div>
+                        <div>
+                            <a href="{{route('admin.permohonan.store',[$rancangan->id])}}" type="button" class="btn btn-success" onclick="return confirm('Apakah Anda Yakin?')"><i class="fas fa-check"></i> Terima</a>
+                        </div>  
                     </div>
                 </div>
             </div>
