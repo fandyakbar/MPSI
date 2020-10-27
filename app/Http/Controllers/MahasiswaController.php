@@ -21,8 +21,87 @@ class MahasiswaController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+     public function index()
     {
-        return view('mahasiswa.mahasiswa');
+        $status = config('status.status');
+        $rancangan = rancangan::all();
+        $detail_dosbing = detail_dosbing::all();
+        $dosen = dosen::all(); 
+        return view('mahasiswa.mahasiswa', compact('rancangan','detail_dosbing','dosen','status'));
     }
+
+    public function tambah($id){
+        $rancangan=rancangan::where('id',$id)->first();
+        return view('mahasiswa.mhs_tambah',compact('rancangan'));
+    }
+
+    public function storeide(Request $request){
+        $user_id = auth()->user()->id;
+        $id_counter = rancangan::count();
+        $id_rancangan = $id_counter++;
+        $rancangan = rancangan::insertGetId([
+            'id' => $id_rancangan,
+            'id_mahasiswa'=> $user_id,
+            'deskripsi' => $request->deskripsi,
+            'status' => 0
+        ]);
+        $detail_dosbing = detail_dosbing::insertGetId([
+            'id_rancangan' => $id_rancangan,
+            'id_dosen' => $request->dosen
+        ]);
+
+        return redirect()->route('list')->with('pesan','Berhasil Ajukan Ide');
+    }
+
+    public function store(Request $request, $id){
+        $rancangan=rancangan::find($id);
+        rancangan::where('id',$id)->update(['deskripsi'=>$request->deskripsi]);
+        rancangan::where('id',$id)->update(['judul'=>$request->judul]);
+        return redirect()->route('Mahasiswa.home')->with('pesan','Berhasil');
+        
+          
+
+    }
+
+    public function detail($id){
+        $rancangan=rancangan::where('id',$id)->get();
+        
+        return view('mahasiswa.mhs_detail',compact('rancangan'));
+        
+    }
+
+    public function edit($id){
+        $rancangan=rancangan::where('id',$id)->first();
+        return view('mahasiswa.mhs_edit',compact('rancangan'));
+    }
+
+    public function update(Request $request, $id){
+        $rancangan=rancangan::find($id);
+        rancangan::where('id',$id)->update(['judul'=>$request->judul]);
+        return redirect()->route('Mahasiswa.home')->with('pesan','Berhasil');
+    }
+
+    public function list(){
+        $user_id = auth()->user()->id; 
+        $status = config('status.status');
+        $rancangan = rancangan::where('id_mahasiswa',$user_id)->get();
+        $detail_dosbing = detail_dosbing::all();
+        $dosen = dosen::all();
+        return view('mahasiswa.list', compact('rancangan','detail_dosbing','dosen','status'));
+    }
+
+    public function tambahide(){
+        $bidang= konsentrasi::all();
+
+        // Load index view
+        return view('mahasiswa.tambahide', compact("bidang"));
+        
+    }
+
+    public function pilihdosbing($id){
+        $dosen = dosen::where('id_kons',$id)->get();
+         return view('mahasiswa.dosbing', compact("dosen"));
+
+    }
+
 }
