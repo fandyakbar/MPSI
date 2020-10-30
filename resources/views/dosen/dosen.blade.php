@@ -90,6 +90,28 @@
                 <div class="card">
                     <div class="card-header">Daftar Permintaan Bimbingan TA</div>
 
+                     {{-- Pesan --}}
+                @if (session('pesan'))
+                <h5 class="card-title">
+                  <div class="alert alert-success" role="alert">
+                    <i class="ni ni-like-2"></i> {{session('pesan')}}
+                  </div>
+                </h5>
+             @endif
+                @if (session('pesans'))
+                <h5 class="card-title">
+                  <div class="alert alert-warning" role="alert">
+                    <i class="ni ni-like-2"></i> {{session('pesans')}}
+                  </div>
+                </h5>
+             @endif
+            @if (count($errors) > 0)
+              <div class="alert alert-danger">
+                Cek Kembali Input Anda !!
+              </div>
+            @endif
+              {{-- Notif --}}
+
                     <div class="card-body">
                       <div class="table-responsive">
                         <table class="table align-items-center table-dark">
@@ -111,12 +133,12 @@
                               <td>{{$permintaan->rancangan->deskripsi }}</td>
                               <td>
                                 @if ($permintaan->rancangan->status==0)
-                                <a href="{{ route('terima', [$permintaan->id_rancangan]) }}" type="button" class="btn btn-primary"><i class="fas fa-check"></i></a>
-                                <a href="{{ route('tolak', [$permintaan->id_rancangan]) }}" type="button" class="btn btn-primary"><i class="fa fa-ban" aria-hidden="true"></i>
+                                  <a href="{{ route('terima', [$permintaan->id_rancangan]) }}" type="button" class="btn btn-primary btn-sm"><i class="fas fa-check"></i></a>
+                                  <a href="{{ route('tolak', [$permintaan->id_rancangan]) }}" type="button" class="btn btn-primary btn-sm"><i class="fa fa-ban" aria-hidden="true"></i>
                                 </i></a>
 
                                 @elseif($permintaan->rancangan->status==1 ||$permintaan->rancangan->status==2)
-                                  {{$status_rancangan[$permintaan->rancangan->status]}}
+                                {!!$permintaan->rancangan->status_text!!}
                                 @endif
                               </td>
                             </tr>

@@ -63,7 +63,8 @@ class AdminController extends Controller
 
     public function kelompok()
     {
-        $dosen = dosen::orderBy('id','asc')->get();
+        $dosen = dosen::orderBy('id','asc') 
+                        ->get();
         return view('admin.kelompok.index',['dosen' => $dosen]);
     }
 

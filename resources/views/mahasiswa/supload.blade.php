@@ -8,7 +8,7 @@
   <meta name="author" content="Creative Tim">
   <title>KELOMPOK 2 - Aplikasi Pengajuan Judul TA</title>
   <!-- Favicon -->
-   <link rel="icon" href="{{ asset('assets/img/brand/unand.png') }}" type="image/png">
+  <link rel="icon" href="{{ asset('assets/img/brand/unand.png') }}" type="image/png">
   <!-- Fonts -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700">
   <!-- Icons -->
@@ -27,40 +27,49 @@
   <nav class="sidenav navbar navbar-vertical  fixed-left  navbar-expand-xs navbar-light bg-white" id="sidenav-main">
     <div class="scrollbar-inner">
       <!-- Brand -->
-       <div class="sidenav-header  align-items-center">
+      <div class="sidenav-header  align-items-center">
         <a class="navbar-brand" href="javascript:void(0)">
           <img src="{{ asset('assets/img/brand/blue.png') }}" class="navbar-brand-img" alt="...">
         </a>
-      </div> 
+      </div>
       <div class="navbar-inner">
         <!-- Collapse -->
         <div class="collapse navbar-collapse" id="sidenav-collapse-main">
         <!-- Nav items -->
         <ul class="navbar-nav">
-            <li class="nav-item">
-            <a class="nav-link active" href="{{route('Dosen.home')}}">
+        <li class="nav-item">
+            <a class="nav-link active" href="/mahasiswa">
                 <i class="ni ni-tv-2 text-primary"></i>
                 <span class="nav-link-text">Dashboard</span>
             </a>
             </li>
+
             <li class="nav-item">
-            <a class="nav-link" href="{{route('judul.index')}}">
-              <i class="ni ni-single-02 text-green"></i>
-                <span class="nav-link-text">Pembuatan Judul</span>
+            <a class="nav-link" href="{{route('list')}}">
+                <i class="ni ni-folder-17 text-yellow"></i>
+                <span class="nav-link-text">Ajukan Ide</span>
+            </a>
+            </li>
+
+            <li class="nav-item">
+            <a class="nav-link" href="">
+                <i class="ni ni-folder-17 text-yellow"></i>
+                <span class="nav-link-text">Ajukan TA</span>
             </a>
             </li>
             <li class="nav-item">
-            <a class="nav-link" href="{{route('dosen.grup')}}">
-                <i class="ni ni-chat-round text-pink"></i>
-                <span class="nav-link-text">Lihat Grup Bimbingan</span>
+            <a class="nav-link" href="{{route('mahasiswa.upload')}}">
+                <i class="ni ni-cloud-upload-96 text-blue"></i>
+                <span class="nav-link-text">Upload Surat Permohonan</span>
             </a>
             </li>
+            
             <li class="nav-item">
-            <a class="nav-link" href="/keluar">
-              <i class="fas fa-sign-out-alt text-pink"></i>
-                <span class="nav-link-text">Logout</span>
-            </a>
-            </li>
+                <a class="nav-link" href="/keluar">
+                    <i class="fas fa-sign-out-alt text-pink"></i>
+                    <span class="nav-link-text">Logout</span>
+                </a>
+                </li>
         </ul>
       </div>
     </div>
@@ -87,43 +96,33 @@
         <div class="row justify-content-center">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header">Daftar Permintaan Bimbingan TA</div>
+                    <div class="card-header"><b>Upload Surat Permohonan </b></div>
 
                     <div class="card-body">
-                    <form action="{{route('tolaks',[$id])}}" method="Post">
-                            @csrf
-                        {{-- Kode Webinar --}}
-                        <div class="form-group">
-                            <label class="bmd-label-floating" for="id">Nama Mahasiswa</label>
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text" id="id">N</span>
-                                </div>
-                            <input disabled type="text" class="form-control" name="id" value="{{$data->mahasiswa->nama}}" aria-label="Username" aria-describedby="id">
-                            </div>
-                        </div>
-                        {{-- Kode Webinar --}}
-                        <div class="form-group">
-                            <label class="bmd-label-floating" for="deskripsi">Ide Gagasan</label>
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text" id="deskripsi">?</span>
-                                </div>
-                            <input disabled type="text" class="form-control" name="deskrips" value="{{$data->deskripsi}}" aria-label="Username" aria-describedby="deskripsi">
-                            </div>
-                        </div>
-                        {{-- Judul Webinar --}}
-                        <div class="form-group">
-                            <label class="bmd-label-floating" for="catatan_dosen">Alasan Menolak</label>
-                            <div class="input-group">
-                            <textarea type="text" rows="10" cols="30" class="form-control" name="catatan_dosen" aria-label="catatan_dosen" aria-describedby="catatan_dosen"></textarea>
-                            </div>
-                        </div>
-                        {{-- Submit --}}
-                        <button type="submit" class="btn btn-outline-primary">Submit</button>
-        
+                         <div class="card">
+                         <form action="{{route('mahasiswa.suploads',[$rancangan->id])}}" method="Post" enctype="multipart/form-data">
+                                @csrf
+                                {{-- Upload --}}
+                                <div class="form-group">
+                                    <label class="bmd-label-floating" for="file_surat">Upload</label>
+                                    <div class="input-group">
+                                    <input type="file" class="form-control" name="file_surat" id="file_surat">
+                                    </div>
+                                </div> 
+                                
+                                <button type="submit" class="btn btn-outline-primary">Submit</button>
                         </form>
-                     </div>
+                         	
+
+        </div>
+
+        <div class="card-footer">
+
+        </div>
+
+    </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

@@ -89,6 +89,26 @@
                 <div class="card">
                     <div class="card-header">Daftar Permintaan Bimbingan TA</div>
 
+                    @if (session('pesan'))
+                    <h5 class="card-title">
+                      <div class="alert alert-success" role="alert">
+                        <i class="ni ni-like-2"></i> {{session('pesan')}}
+                      </div>
+                    </h5>
+                 @endif
+                 @if (session('pesans'))
+                <h5 class="card-title">
+                  <div class="alert alert-warning" role="alert">
+                    <i class="ni ni-like-2"></i> {{session('pesans')}}
+                  </div>
+                </h5>
+             @endif
+                @if (count($errors) > 0)
+                  <div class="alert alert-danger">
+                    Cek Kembali Input Anda !!
+                  </div>
+                @endif
+
                     <div class="card-body">
                       <div class="table-responsive">
                         <table class="table align-items-center table-dark">
@@ -109,8 +129,8 @@
                               <td>{{$permintaan->rancangan->mahasiswa->nama}}</td>
                               <td>{{$permintaan->rancangan->judul }}</td>
                               <td>
-                                @if ($permintaan->rancangan->status==1)
-                                <a href="{{ route('judul.show', [$permintaan->id_rancangan]) }}" type="button" class="btn btn-primary"><i class="fa fa-search" aria-hidden="true"></i>
+                                @if ($permintaan->rancangan->status==2)
+                                <a href="{{ route('judul.show', [$permintaan->id_rancangan]) }}" type="button" class="btn btn-primary btn-sm"><i class="fa fa-search" aria-hidden="true"></i>
                                 </a>
                                 </i></a>
 

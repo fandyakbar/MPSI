@@ -29,9 +29,11 @@ class DosenController extends Controller
     public function index()
     {
         $user_id = auth()->user()->id;
-        $data=Detail_dosbing::where('id_dosen', '=', $user_id)
+        $data=Detail_dosbing::join('rancangan','rancangan.id','=','detail_dosbing.id_rancangan')
+                        ->where('detail_dosbing.id_dosen', '=', $user_id)
+                        ->where('rancangan.status', '<',3)
                         ->get();
-                        $status_rancangan = config('rancangan.status_rancangan');
+        $status_rancangan = config('rancangan.status_rancangan');
         return view('dosen.dosen', compact('data', 'status_rancangan'));
     }
     public function grup()
@@ -41,7 +43,7 @@ class DosenController extends Controller
         $data=Detail_dosbing::join('rancangan', 'detail_dosbing.id_rancangan', '=', 'rancangan.id')
                         ->where('detail_dosbing.id_dosen', '=', $user_id)
                         ->where('rancangan.status','!=','0')
-                        ->where('rancangan.status','!=','2')
+                        ->where('rancangan.status','!=','1')
                         ->get();
         $status_rancangan = config('rancangan.status_rancangan');
         return view('dosen.grup', compact('data', 'status_rancangan','uname'));
@@ -52,9 +54,13 @@ class DosenController extends Controller
                         ->get();
         $updates = Rancangan::where('id', $id)->first();
         Rancangan::where('id', $id)
+          ->update(['status' => 2]);
+        
+        Mahasiswa::where('id', $updates->id_mahasiswa)
           ->update(['status' => 1]);
         
-        return redirect()->route('Dosen.home', compact('data'));
+        
+        return redirect()->route('Dosen.home', compact('data'))->with('pesan','Berhasil Menerima Mahasiswa');
     
     }
     public function tolak($id){
@@ -68,7 +74,7 @@ class DosenController extends Controller
 
         $updates = Rancangan::where('id', $id)->first();
         Rancangan::where('id', $id)
-          ->update(['status' => 2],
+          ->update(['status' => 1],
           ['catatan_dosen' => $request->catatan]);
          
         Rancangan::where('id', $id)->update($request->only(
@@ -76,7 +82,7 @@ class DosenController extends Controller
           
         ));
         
-        return redirect()->route('Dosen.home', compact('data'));
+        return redirect()->route('Dosen.home', compact('data'))->with('pesans','Anda Menolak Permintaan');
        
     }
 }

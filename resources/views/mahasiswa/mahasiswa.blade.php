@@ -8,7 +8,7 @@
   <meta name="author" content="Creative Tim">
   <title>KELOMPOK 2 - Aplikasi Pengajuan Judul TA</title>
   <!-- Favicon -->
-  <!-- <link rel="icon" href="{{ asset('assets/img/brand/favicon.png') }}" type="image/png"> -->
+   <link rel="icon" href="{{ asset('assets/img/brand/unand.png') }}" type="image/png"> 
   <!-- Fonts -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700">
   <!-- Icons -->
@@ -27,11 +27,11 @@
   <nav class="sidenav navbar navbar-vertical  fixed-left  navbar-expand-xs navbar-light bg-white" id="sidenav-main">
     <div class="scrollbar-inner">
       <!-- Brand -->
-      <!-- <div class="sidenav-header  align-items-center">
+       <div class="sidenav-header  align-items-center">
         <a class="navbar-brand" href="javascript:void(0)">
           <img src="{{ asset('assets/img/brand/blue.png') }}" class="navbar-brand-img" alt="...">
         </a>
-      </div> -->
+      </div>
       <div class="navbar-inner">
         <!-- Collapse -->
         <div class="collapse navbar-collapse" id="sidenav-collapse-main">
@@ -58,15 +58,9 @@
             </a>
             </li>
             <li class="nav-item">
-            <a class="nav-link" href="examples/register.html">
+            <a class="nav-link" href="{{route('mahasiswa.upload')}}">
                 <i class="ni ni-cloud-upload-96 text-blue"></i>
                 <span class="nav-link-text">Upload Surat Permohonan</span>
-            </a>
-            </li>
-            <li class="nav-item">
-            <a class="nav-link" href="examples/register.html">
-                <i class="ni ni-chat-round text-pink"></i>
-                <span class="nav-link-text">Lihat Grup Bimbingan</span>
             </a>
             </li>
             <li class="nav-item">
@@ -102,6 +96,26 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header"><b>List Rancangan Judul Tugas Akhir</b></div>
+                    {{--  --}}
+                    @if (session('pesan'))
+                    <h5 class="card-title">
+                      <div class="alert alert-success" role="alert">
+                        <i class="ni ni-like-2"></i> {{session('pesan')}}
+                      </div>
+                    </h5>
+                 @endif
+                    @if (session('pesans'))
+                    <h5 class="card-title">
+                      <div class="alert alert-warning" role="alert">
+                        <i class="ni ni-like-2"></i> {{session('pesans')}}
+                      </div>
+                    </h5>
+                 @endif
+                @if (count($errors) > 0)
+                  <div class="alert alert-danger">
+                    Cek Kembali Input Anda !!
+                  </div>
+                @endif
 
                     <div class="card-body">
                     <div class="card-body">
@@ -112,10 +126,11 @@
     <table class="table align-items-center table-dark" style="text-align:center">
         <thead class="thead-dark">
             <tr>
-                <!-- <th scope="col" class="sort" data-sort="nim">NIM</th> -->
+              <!-- <th scope="col" class="sort" data-sort="nim">NIM</th> -->
+              <th scope="col" class="sort" data-sort="status">Status</th>
                 <th scope="col" class="sort" data-sort="judul">Judul yang Diajukan</th>
                 <th scope="col" class="sort" data-sort="dosbing">Dosen Pembimbing</th>
-                <th scope="col" class="sort" data-sort="status">Status</th>
+                <th scope="col" class="sort" data-sort="status">Pesan Dosen</th>
                 <!-- <th scope="col">Users</th> -->
                 <!-- <th scope="col" class="sort" data-sort="aksi">Aksi</th> -->
                 <th scope="col">Aksi</th>
@@ -124,7 +139,10 @@
         <tbody class="list">
             @forelse($detail_dosbing as $detail_dosbing)
             <tr>
-                
+              
+              <td>
+                {!!$detail_dosbing->rancangan->status_text!!}
+              </td>
                 <td class="budget">
                 {{$detail_dosbing->rancangan->judul}}
                 </td>
@@ -132,14 +150,22 @@
                     {{$detail_dosbing->dosen->nama}}
                 </td>
                 
-                <td>
-                <h4 style="background-color:white">{{$status[$detail_dosbing->rancangan->status]}}</h4>
-                </td>
 
                 <td>
-                
-                <a type="button" class="btn btn-primary" href="{{route('detail',[$detail_dosbing->id_rancangan])}}">Detail</a>
+                  @if ($detail_dosbing->rancangan->catatan_dosen)
+                          {{$detail_dosbing->rancangan->catatan_dosen}}
+                          @else
+                          Belum Ada Pesan
+                          @endif
                 </td>
+                <td>
+                    @if ($detail_dosbing->rancangan->status==2)
+                    <a type="button" class="btn btn-primary btn-sm" href="{{route('detail',[$detail_dosbing->id_rancangan])}}">Detail</a>
+                    @else
+                    Tidak Tersedia
+                    @endif
+                </td>
+
             </tr>
             @empty
             <tr>

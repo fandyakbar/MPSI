@@ -95,20 +95,22 @@
                             <thead class="thead-dark">
                             <tr>
                                
+                                <th>Status</th>
                                 <th>NIM</th>
                                 <th>Nama Mahasiswa</th>
                                 <th>Judul</th>
-                                <th>Ide TA</th>
+                              
                               </tr>
                             </thead>
                             <tbody>
                               
                             @forelse ($data as $permintaan)
                             <tr>
+                              <td>{!!$permintaan->rancangan->status_text!!}</td>
                               <td>{{$permintaan->rancangan->mahasiswa->nim}}</td>
                               <td>{{$permintaan->rancangan->mahasiswa->nama}}</td>
                               <td>{{$permintaan->rancangan->judul }}</td>
-                              <td>{{$permintaan->rancangan->deskripsi }}</td>
+                          
                             </tr>
                             @empty
                             <tr>

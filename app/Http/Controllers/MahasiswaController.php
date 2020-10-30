@@ -3,6 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\model\Detail_dosbing;
+use App\model\dosen;
+use App\model\mahasiswa;
+use App\model\Rancangan;
+use App\model\Konsentrasi;
 
 class MahasiswaController extends Controller
 {
@@ -24,8 +29,11 @@ class MahasiswaController extends Controller
      public function index()
     {
         $status = config('status.status');
-        $rancangan = rancangan::all();
-        $detail_dosbing = detail_dosbing::all();
+        $user_id = auth()->user()->id;
+        $rancangan = rancangan::where('id_mahasiswa',$user_id)->get();
+        $detail_dosbing = detail_dosbing::join('rancangan','rancangan.id','=','detail_dosbing.id_rancangan')
+                                        ->where('rancangan.id_mahasiswa',$user_id)
+                                        ->get();
         $dosen = dosen::all(); 
         return view('mahasiswa.mahasiswa', compact('rancangan','detail_dosbing','dosen','status'));
     }
@@ -83,11 +91,12 @@ class MahasiswaController extends Controller
 
     public function list(){
         $user_id = auth()->user()->id; 
-        $status = config('status.status');
+        $status_rancangan = config('rancangan.status_rancangan');
         $rancangan = rancangan::where('id_mahasiswa',$user_id)->get();
-        $detail_dosbing = detail_dosbing::all();
+        $detail_dosbing = detail_dosbing::join('rancangan','rancangan.id','=','detail_dosbing.id_rancangan')
+        ->where('rancangan.id_mahasiswa',$user_id)->get();
         $dosen = dosen::all();
-        return view('mahasiswa.list', compact('rancangan','detail_dosbing','dosen','status'));
+        return view('mahasiswa.list', compact('rancangan','detail_dosbing','dosen','status_rancangan'));
     }
 
     public function tambahide(){
@@ -102,6 +111,52 @@ class MahasiswaController extends Controller
         $dosen = dosen::where('id_kons',$id)->get();
          return view('mahasiswa.dosbing', compact("dosen"));
 
+    }
+    function upload(){
+
+        $user_id = auth()->user()->id;
+        $rancangan = rancangan::where('id_mahasiswa',$user_id)
+                                ->where('status', 3)
+                                ->get();
+        
+        return view('mahasiswa.upload', compact('rancangan'));
+    }
+    function supload($id){
+
+        $user_id = auth()->user()->id;
+        $rancangan = rancangan::where('id_mahasiswa',$user_id)
+                                ->where('status', 3)
+                                ->where('id', $id)
+                                ->first();
+            
+        
+        return view('mahasiswa.supload', compact('rancangan'));
+    }
+    function suploads(Request $request,$id){
+
+        $user_id = auth()->user()->id;
+        $rancangan = rancangan::where('id_mahasiswa',$user_id)
+                                ->where('status', 3)
+                                ->where('id', $id)
+                                ->first();
+
+        if($request->hasFile('file_surat')) {
+    
+        $folder = 'public/sertifikat';
+        $filename = $rancangan->id .'_Surat_'.$rancangan->mahasiswa->nim.'.'. $request->file('file_surat')->getClientOriginalExtension();
+        $filepath = $request->file_surat->storeAs($folder,$filename);
+        $update= Rancangan::where('id',$rancangan->id)->update([
+                            'file_surat' => $filename
+                                        ]);
+                        
+        }
+                               
+                                
+        return redirect()->route('mahasiswa.upload')->with('pesan','Berhasil Mengunggah File');
+                        
+        
+
+                                
     }
 
 }
