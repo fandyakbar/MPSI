@@ -104,7 +104,6 @@
                                 <th>No.</th>
                                 <th>NIP</th>
                                 <th>Nama Dosen</th>
-                                <th>Konsentrasi</th>
                                 <th>Detail</th>
                               </tr>
                             </thead>
@@ -115,7 +114,6 @@
                               <td>{{$loop->iteration}}</td>
                               <td>{{$ds->nip}}</td>
                               <td>{{$ds->nama}}</td>
-                              <td>{{$ds->konsentrasi->nama}}</td>
                               <td>
                                     <a href="{{ route('admin.kelompok.show', [$ds->id]) }}" type="button" class="btn btn-primary btn-sm"><i class="fa fa-search"></i></a>
                               </td>

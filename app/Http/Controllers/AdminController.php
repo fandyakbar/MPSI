@@ -46,7 +46,11 @@ class AdminController extends Controller
             'status' => '1',
         ]);
 
-        Rancangan::create([
+        $id_counter = rancangan::count();
+        $id_rancangan = $id_counter++;
+
+        $rancangan = rancangan::insertGetId([
+            'id' => $id_rancangan,
             'id_mahasiswa' => $id,
             'status' => "0",
         ]); 

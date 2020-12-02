@@ -51,18 +51,18 @@
             </a>
             </li>
 
-            <li class="nav-item">
+            {{-- <li class="nav-item">
             <a class="nav-link" href="">
                 <i class="ni ni-folder-17 text-yellow"></i>
                 <span class="nav-link-text">Ajukan TA</span>
             </a>
-            </li>
+            </li>--}}
             <li class="nav-item">
             <a class="nav-link" href="{{route('mahasiswa.upload')}}">
                 <i class="ni ni-cloud-upload-96 text-blue"></i>
                 <span class="nav-link-text">Upload Surat Permohonan</span>
             </a>
-            </li>
+            </li> 
             
             <li class="nav-item">
                 <a class="nav-link" href="/keluar">
@@ -117,46 +117,65 @@
                     Cek Kembali Input Anda !!
                   </div>
                 @endif
-
+                  <center>
+                   <a type="button" class="btn btn-outline-primary col-md-11" href = "{{route('dosbing')}}">Ajukan Ide</a> <br>
+                  </center>
                     <div class="card-body">
                          <div class="card">
                          	
 
             <table class="table align-items-center table-dark" style="text-align: center;">
-              <a type="button" class="btn btn-outline-primary" href = "{{route('bidang')}}">Ajukan Ide</a>
                 <thead class="thead-dark">
                 <tr>
                     <th>Deskripsi Ide</th>
                     <th>Dosen Pembimbing</th>
                     <th>Status</th>
                     <th>Tambah Judul</th>
+                    <th>Tambah Dosen</th>
                     <th>Pesan Dosen</th>
                 </tr>
                 </thead>
                 <tbody>
-                @forelse($detail_dosbing as $detail_dosbing)
+                @forelse($rancangan as $ra)
                     <tr>
-                        <td>@if ($detail_dosbing->rancangan->deskripsi)
-                          {{$detail_dosbing->rancangan->deskripsi}}
-            @else
-              -
+                        <td>@if ($ra->deskripsi)
+                          {{$ra->deskripsi}}
+             @else
+                -
             @endif</td>
-                        <td>{{$detail_dosbing->dosen->nama}}</td>
                         <td>
-                          {!!$detail_dosbing->rancangan->status_text!!}
+                          @forelse ($ra->detail as $item)
+                              <div>
+                                {{$item->dosen->nama}}
+                              </div>
+                          @empty
+                              <div>
+                                belum ada dosen
+                              </div>
+                          @endforelse
                         </td>
                         <td>
-                        @if($detail_dosbing->rancangan->status==1)
-                          
-                      <a href="{{route('tambahjudul',[$detail_dosbing->id_rancangan])}}" class="btn btn-primary btn-sm"><i class="far fa-edit" aria-hidden="true"></i></a>
-                          @else
-                          <a href="{{route('tambahjudul',[$detail_dosbing->id_rancangan])}}" class="btn btn-primary disabled btn-sm" ><i class="far fa-edit" aria-hidden="true"></i></a>
+                          {!!$ra->status_text!!}
+                        </td>
+                        <td>
+                          <a href="{{route('tambahjudul',[$ra->id])}}" class="btn btn-primary 
+                            @if ($ra->status!=2)
+                                disabled
+                            @endif
+                            btn-sm" ><i class="far fa-edit" aria-hidden="true"></i></a>
                           </td>
-                          @endif
+                         
+                          <td>
+                            <a href="{{route('tdos',[$ra->id])}}" class="btn btn-primary btn-sm 
+                              @if ($ra->status!=2)
+                                  disabled 
+                              @endif
+                              " ><i class="far fa-edit" aria-hidden="true"></i></a>
+                          </td>
 
                         <td>
-                          @if ($detail_dosbing->rancangan->catatan_dosen)
-                          {{$detail_dosbing->rancangan->catatan_dosen}}
+                          @if ($ra->catatan_dosen)
+                          {{$ra->catatan_dosen}}
                           @else
                           Belum Ada Pesan
                           @endif

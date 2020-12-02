@@ -45,7 +45,7 @@ class MahasiswaController extends Controller
 
     public function storeide(Request $request){
         $user_id = auth()->user()->id;
-        $id_counter = rancangan::count();
+        $id_counter = Rancangan::count();
         $id_rancangan = $id_counter++;
         $rancangan = rancangan::insertGetId([
             'id' => $id_rancangan,
@@ -59,6 +59,15 @@ class MahasiswaController extends Controller
         ]);
 
         return redirect()->route('list')->with('pesan','Berhasil Ajukan Ide');
+    }
+    public function storedos(Request $request, $id){
+        $user_id = auth()->user()->id;
+        $detail_dosbing = detail_dosbing::insertGetId([
+            'id_rancangan' => $id,
+            'id_dosen' => $request->dosen
+        ]);
+
+        return redirect()->route('list')->with('pesan','Berhasil Menambah Dosen');
     }
 
     public function store(Request $request, $id){
@@ -93,22 +102,21 @@ class MahasiswaController extends Controller
         $user_id = auth()->user()->id; 
         $status_rancangan = config('rancangan.status_rancangan');
         $rancangan = rancangan::where('id_mahasiswa',$user_id)->get();
-        $detail_dosbing = detail_dosbing::join('rancangan','rancangan.id','=','detail_dosbing.id_rancangan')
-        ->where('rancangan.id_mahasiswa',$user_id)->get();
         $dosen = dosen::all();
-        return view('mahasiswa.list', compact('rancangan','detail_dosbing','dosen','status_rancangan'));
+        return view('mahasiswa.list', compact('rancangan','dosen','status_rancangan'));
     }
 
-    public function tambahide(){
+    public function tambahdosbing($id){
         $bidang= konsentrasi::all();
+        $dosen = dosen::get();
 
         // Load index view
-        return view('mahasiswa.tambahide', compact("bidang"));
+        return view('mahasiswa.adddosbing', compact('id','dosen'));
         
     }
 
-    public function pilihdosbing($id){
-        $dosen = dosen::where('id_kons',$id)->get();
+    public function pilihdosbing(){
+        $dosen = dosen::get();
          return view('mahasiswa.dosbing', compact("dosen"));
 
     }

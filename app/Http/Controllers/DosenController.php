@@ -25,16 +25,20 @@ class DosenController extends Controller
      * Show the application dashboard.
      *
      * @return \Illuminate\Contracts\Support\Renderable
-     */
+     */ 
     public function index()
     {
         $user_id = auth()->user()->id;
+        $counter = Detail_dosbing::join('rancangan','rancangan.id','=','detail_dosbing.id_rancangan')
+        ->where('detail_dosbing.id_dosen', '=', $user_id)
+        ->where('rancangan.status', '>',1)
+                    ->count();
         $data=Detail_dosbing::join('rancangan','rancangan.id','=','detail_dosbing.id_rancangan')
                         ->where('detail_dosbing.id_dosen', '=', $user_id)
                         ->where('rancangan.status', '<',3)
                         ->get();
         $status_rancangan = config('rancangan.status_rancangan');
-        return view('dosen.dosen', compact('data', 'status_rancangan'));
+        return view('dosen.dosen', compact('data', 'status_rancangan','counter'));
     }
     public function grup()
     {
@@ -45,22 +49,39 @@ class DosenController extends Controller
                         ->where('rancangan.status','!=','0')
                         ->where('rancangan.status','!=','1')
                         ->get();
+         $counter = Detail_dosbing::join('rancangan','rancangan.id','=','detail_dosbing.id_rancangan')
+                        ->where('detail_dosbing.id_dosen', '=', $user_id)
+                        ->where('rancangan.status', '>',1)
+                                    ->count();
         $status_rancangan = config('rancangan.status_rancangan');
-        return view('dosen.grup', compact('data', 'status_rancangan','uname'));
+        return view('dosen.grup', compact('data', 'status_rancangan','uname','counter'));
     }
     public function terima($id){
         $user_id = auth()->user()->id;
         $data=Detail_dosbing::where('id_dosen', '=', $user_id)
                         ->get();
-        $updates = Rancangan::where('id', $id)->first();
-        Rancangan::where('id', $id)
-          ->update(['status' => 2]);
-        
-        Mahasiswa::where('id', $updates->id_mahasiswa)
-          ->update(['status' => 1]);
-        
-        
-        return redirect()->route('Dosen.home', compact('data'))->with('pesan','Berhasil Menerima Mahasiswa');
+        $counter = Detail_dosbing::join('rancangan','rancangan.id','=','detail_dosbing.id_rancangan')
+                        ->where('detail_dosbing.id_dosen', '=', $user_id)
+                        ->where('rancangan.status', '>',1)
+                                    ->count();
+
+        if ($counter<=10) {
+            # code...
+            $updates = Rancangan::where('id', $id)->first();
+            Rancangan::where('id', $id)
+              ->update(['status' => 2]);
+            
+            Mahasiswa::where('id', $updates->id_mahasiswa)
+              ->update(['status' => 1]);
+            
+            
+            return redirect()->route('Dosen.home', compact('data'))->with('pesan','Berhasil Menerima Mahasiswa');
+        } else {
+            Rancangan::where('id', $id)
+            ->update(['status' => 1,
+            'catatan_dosen' => 'Penuh']);
+             return redirect()->route('Dosen.home', compact('data'))->with('pesans','Penuh');
+        }
     
     }
     public function tolak($id){

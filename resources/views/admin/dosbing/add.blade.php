@@ -8,7 +8,7 @@
   <meta name="author" content="Creative Tim">
   <title>KELOMPOK 2 - Aplikasi Pengajuan Judul TA</title>
   <!-- Favicon -->
-   <link rel="icon" href="{{ asset('assets/img/brand/unand.png') }}" type="image/png"> 
+  <link rel="icon" href="{{ asset('assets/img/brand/unand.png') }}" type="image/png">
   <!-- Fonts -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700">
   <!-- Icons -->
@@ -27,39 +27,45 @@
   <nav class="sidenav navbar navbar-vertical  fixed-left  navbar-expand-xs navbar-light bg-white" id="sidenav-main">
     <div class="scrollbar-inner">
       <!-- Brand -->
-       <div class="sidenav-header  align-items-center">
+      <div class="sidenav-header  align-items-center">
         <a class="navbar-brand" href="javascript:void(0)">
           <img src="{{ asset('assets/img/brand/blue.png') }}" class="navbar-brand-img" alt="...">
         </a>
-      </div>
+      </div> 
       <div class="navbar-inner">
         <!-- Collapse -->
         <div class="collapse navbar-collapse" id="sidenav-collapse-main">
         <!-- Nav items -->
         <ul class="navbar-nav">
             <li class="nav-item">
-            <a class="nav-link active" href="{{route('Dosen.home')}}">
+            <a class="nav-link" href="{{route('Admin.home')}}">
                 <i class="ni ni-tv-2 text-primary"></i>
                 <span class="nav-link-text">Dashboard</span>
             </a>
             </li>
             <li class="nav-item">
-            <a class="nav-link" href="{{route('judul.index')}}">
-              <i class="ni ni-single-02 text-green"></i>
-                <span class="nav-link-text">Pembuatan judul</span>
+            <a class="nav-link" href="{{route('admin.permohonan')}}">
+                <i class="ni ni-bullet-list-67 text-default"></i>
+                <span class="nav-link-text">Daftar Permohonan TA</span>
+            </a>
+            </li>
+            <li class="nav-item active">
+            <a class="nav-link active" href="{{route('admin.dosbing')}}">
+                <i class="ni ni-single-02 text-pink"></i>
+                <span class="nav-link-text">Pilih Dosen Pembimbing</span>
             </a>
             </li>
             <li class="nav-item">
-            <a class="nav-link" href="{{route('dosen.grup')}}">
-                <i class="ni ni-chat-round text-pink"></i>
-                <span class="nav-link-text">Lihat Grup Bimbingan</span>
+            <a class="nav-link" href="{{route('admin.kelompok')}}">
+                <i class="ni ni-circle-08 text-yellow"></i>
+                <span class="nav-link-text">Kelompok Bimbingan</span>
             </a>
             </li>
             <li class="nav-item">
-            <a class="nav-link" href="/keluar">
-              <i class="fas fa-sign-out-alt text-pink"></i>
-                <span class="nav-link-text">Logout</span>
-            </a>
+                <a class="nav-link" href="{{route('keluar')}}">
+                    <i class="fas fa-sign-out-alt text-pink"></i>
+                    <span class="nav-link-text">Logout</span>
+                </a>
             </li>
         </ul>
       </div>
@@ -87,7 +93,7 @@
         <div class="row justify-content-center">
             <div class="col-md-12">
                 <div class="card">
-                <div class="card-header">Daftar Grup Bimbingan TA {{$uname}}</div>
+                    <div class="card-header"><h3>Daftar Mahasiswa</h3></div>
 
                     <div class="card-body">
                       <div class="table-responsive">
@@ -95,33 +101,60 @@
                             <thead class="thead-dark">
                             <tr>
                                
-                                <th>Status</th>
+                                <th>No.</th>
                                 <th>NIM</th>
                                 <th>Nama Mahasiswa</th>
-                                <th>Judul</th>
-                              
+                                <th>Aksi</th>
                               </tr>
                             </thead>
                             <tbody>
                               
-                            @forelse ($data as $permintaan)
+                            @forelse ($mahasiswa as $mhs)
                             <tr>
-                              <td>{!!$permintaan->rancangan->status_text!!}</td>
-                              <td>{{$permintaan->rancangan->mahasiswa->nim}}</td>
-                              <td>{{$permintaan->rancangan->mahasiswa->nama}}</td>
-                              <td>{{$permintaan->rancangan->judul }}</td>
-                          
+                              <td>{{$loop->iteration}}</td>
+                              <td>{{$mhs->nim}}</td>
+                              <td>{{$mhs->nama}}</td>
+                              <td>
+                                <!-- Trigger the modal with a button -->
+                                <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal">Pilih Dosen</button>
+
+                                <!-- Modal -->
+                                <div id="myModal" class="modal fade" role="dialog">
+                                  <div class="modal-dialog">
+
+                                    <!-- Modal content-->
+                                    <div class="modal-content">
+                                      <div class="modal-header">
+                                        <h4 class="modal-title">Pilih Dosen Pembimbing</h4>
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                      </div>
+                                      <div class="modal-body">
+                                        <form action="{{route('admin.dosbing.store',[$mhs->id])}}" method="get">
+                                        <div class="form-group">
+                                          <h4>Dosen Pembimbing</h4>
+                                          <select class="form-control" id="exampleFormControlSelect1" name="dosbing">
+                                          @foreach($dosen as $ds)
+                                            <option value="{{$ds->id}}">{{$ds->nama}}</option>
+                                          @endforeach
+                                          </select>
+                                        </div>
+                                      </div>
+                                      <div class="modal-footer">
+                                        <button type="submit" class="btn btn-success">Simpan</button>
+                                      </div>
+                                      </form>
+                                    </div>
+
+                                  </div>
+                                </div>
+                              </td>
                             </tr>
                             @empty
                             <tr>
-                              <td colspan="5">Belum ada Permintaan</td>
+                              <td colspan="5">Tidak Ada Mahasiswa</td>
                           </tr>
                             @endforelse
                           
-                            </tbody>
-                            <tbody>
-                              <td colspan="3"> Jumlah Peserta Bimbingan TA</td>
-                            <td>{{$counter}}</td>
                             </tbody>
                         </table>
                     

@@ -137,30 +137,38 @@
             </tr>
         </thead>
         <tbody class="list">
-            @forelse($detail_dosbing as $detail_dosbing)
+            @forelse($rancangan as $rancangan)
             <tr>
               
               <td>
-                {!!$detail_dosbing->rancangan->status_text!!}
+                {!!$rancangan->status_text!!}
               </td>
                 <td class="budget">
-                {{$detail_dosbing->rancangan->judul}}
+                {{$rancangan->judul}}
                 </td>
                 <td>
-                    {{$detail_dosbing->dosen->nama}}
+                   @forelse ($rancangan->detail as $it)
+                       <div>
+                         {{$it->dosen->nama}}
+                       </div>
+                   @empty
+                       <div>
+                         Belum Ada
+                       </div>
+                   @endforelse
                 </td>
                 
 
                 <td>
-                  @if ($detail_dosbing->rancangan->catatan_dosen)
-                          {{$detail_dosbing->rancangan->catatan_dosen}}
+                  @if ($rancangan->catatan_dosen)
+                          {{$rancangan->catatan_dosen}}
                           @else
                           Belum Ada Pesan
                           @endif
                 </td>
                 <td>
-                    @if ($detail_dosbing->rancangan->status==2)
-                    <a type="button" class="btn btn-primary btn-sm" href="{{route('detail',[$detail_dosbing->id_rancangan])}}">Detail</a>
+                    @if ($rancangan->status==2)
+                    <a type="button" class="btn btn-primary btn-sm" href="{{route('detail',[$rancangan->id])}}">Detail</a>
                     @else
                     Tidak Tersedia
                     @endif

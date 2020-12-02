@@ -149,6 +149,14 @@
                             @endforelse
                           
                             </tbody>
+                            <tbody>
+                              <tr>
+                                <td colspan="3">Jumlah Mahasiswa Yang Diterima</td>
+                                <td>
+                                  {{$counter}}
+                                </td>
+                              </tr>
+                            </tbody>
                         </table>
                     
                     </div>

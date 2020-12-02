@@ -39,9 +39,10 @@ Route::get('/mahasiswa/detail/{id}', 'MahasiswaController@detail')->name('detail
 Route::get('mahasiswa/detail/{id}/edit','MahasiswaController@edit')->name('edit');
 Route::post('/mahasiswa/detail/{id}/update', 'MahasiswaController@update')->name('update');
 Route::get('/mahasiswa/list','MahasiswaController@list')->name('list');
-Route::get('/mahasiswa/tambahide', 'MahasiswaController@tambahide')->name('bidang');
-Route::get('/mahasiswa/tambahide/{id}', 'MahasiswaController@pilihdosbing')->name('dosbing');
+Route::get('/mahasiswa/tambahdosbing/{id}', 'MahasiswaController@tambahdosbing')->name('tdos');
+Route::get('/mahasiswa/tambahide', 'MahasiswaController@pilihdosbing')->name('dosbing');
 Route::post('/mahasiswa/storeide','MahasiswaController@storeide')->name('storeide');
+Route::post('/mahasiswa/storedos/{id}','MahasiswaController@storedos')->name('storedos');
 
 // Route By Fandy
 
