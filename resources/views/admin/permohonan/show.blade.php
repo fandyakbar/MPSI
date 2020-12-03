@@ -120,9 +120,15 @@
                             <div class="form-label">Surat Permohonan</div>
                             <div><h5>{{$rancangan->file_surat}}</h5></div>
                         </div>
+                        @if ($rancangan->file_surat)
                         <div>
                             <a href="{{route('admin.permohonan.store',[$rancangan->id])}}" type="button" class="btn btn-success" onclick="return confirm('Apakah Anda Yakin?')"><i class="fas fa-check"></i> Terima</a>
-                        </div>  
+                        </div>
+                        @else
+                          <div>
+                              <a type="button" class="btn btn-danger disabled"><i class="fas fa-exclamation-circle"></i> Surat Permohonan Belum Diupload</a>
+                          </div>
+                        @endif
                     </div>
                 </div>
             </div>
